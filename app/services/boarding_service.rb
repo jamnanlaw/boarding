@@ -61,9 +61,9 @@ class BoardingService
 
     begin
       groups = Spaceship::TestFlight::Group.add_tester_to_groups!(tester: tester, app: app, groups: tester_group_names)
-      if tester.kind_of?(Spaceship::Tunes::Tester::Internal)
-        Rails.logger.info "Successfully added tester to app #{app.name}"
-      else
+      # if tester.kind_of?(Spaceship::Tunes::Tester::Internal)
+      #   Rails.logger.info "Successfully added tester to app #{app.name}"
+      # else
         # tester was added to the group(s) in the above add_tester_to_groups() call, now we need to let the user know which group(s)
         if tester_group_names
           group_names = groups.map(&:name).join(", ")
@@ -71,7 +71,7 @@ class BoardingService
         else
           Rails.logger.info "Successfully added tester to the default tester group in app: #{app.name}"
         end
-      end
+      # end
 
     rescue => ex
       Rails.logger.error "Could not add #{tester.email} to app: #{app.name}"
