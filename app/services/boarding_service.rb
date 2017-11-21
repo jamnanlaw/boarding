@@ -85,16 +85,16 @@ class BoardingService
 
     def create_tester(email: nil, first_name: nil, last_name: nil, app: nil)
       current_user = Spaceship::Members.find(Spaceship::Tunes.client.user)
-      if current_user.admin? || current_user.app_manager?
+      # if current_user.admin? || current_user.app_manager?
         Spaceship::TestFlight::Tester.create_app_level_tester(app_id: app.apple_id,
                                                           first_name: first_name,
                                                            last_name: last_name,
                                                                email: email)
         tester = Spaceship::TestFlight::Tester.find(app_id: app.apple_id, email: email)
         Rails.logger.info "Successfully added tester: #{email} to app: #{app.name}"
-      else
-        raise "Current account doesn't have permission to create a tester"
-      end
+      # else
+      #   raise "Current account doesn't have permission to create a tester"
+      # end
 
       return tester
     rescue => ex
@@ -103,16 +103,16 @@ class BoardingService
     end
 
     def find_app_tester(email: nil, app: nil)
-      current_user = Spaceship::Members.find(Spaceship::Tunes.client.user)
-      if current_user.admin? || current_user.app_manager?
-        unless app
-          raise "You must define what app this tester (#{email}) should be added to"
-        end
+      # current_user = Spaceship::Members.find(Spaceship::Tunes.client.user)
+      # if current_user.admin? || current_user.app_manager?
+      #   unless app
+      #     raise "You must define what app this tester (#{email}) should be added to"
+      #   end
         tester = Spaceship::TestFlight::Tester.find(app_id: app.apple_id, email: email)
-      else
-        raise "Account #{current_user.email_address} doesn't have a role that is allowed to administer app testers, current roles: #{current_user.roles}"
-        tester = nil
-      end
+      # else
+      #   raise "Account #{current_user.email_address} doesn't have a role that is allowed to administer app testers, current roles: #{current_user.roles}"
+      #   tester = nil
+      # end
 
       if tester
         Rails.logger.info "Found existing tester #{email}"
