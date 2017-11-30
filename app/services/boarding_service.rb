@@ -192,14 +192,15 @@ class BoardingService
         message = gmail.inbox.emails(:unread, :to => dyn_gmail).first
         if message 
           gmail.deliver do
-          to signupemail
-          subject message.subject
-          text_part do
-            body message.text
-          end
-          html_part do
-            content_type 'text/html; charset=UTF-8'
-            body message.html
+            to signupemail
+            subject message.subject
+            text_part do
+              body message.text
+            end
+            html_part do
+              content_type 'text/html; charset=UTF-8'
+              body message.html
+            end
           end
           break
         else
