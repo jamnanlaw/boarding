@@ -187,10 +187,16 @@ class BoardingService
 
       #toemail = "`#{@gmail_username}`.#{signupemail.sub!('@'.'.')}@gmail.com"
       waitcount = 5
+      url = ""
+      start = "https://beta.itunes.apple.com"
+      last_char = "'"
       loop do
         sleep(5) # wait 5 seconds
         message = gmail.inbox.emails(:unread, :to => dyn_gmail).first
-        if message 
+        if message
+          body = message.html
+          beta_url = body[/#{start}(.*?)#{last_char}/m, 1]
+          url = start + '/' + beta_url.unpack('M')[0]
           gmail.deliver do
             to signupemail
             subject message.subject
@@ -207,11 +213,6 @@ class BoardingService
           waitcount -= 1
           break if waitcount == 0
         end
-      end
-      url = ""
-      if message
-        beta_url = body[/#{start}(.*?)#{last_char}/m, 1]
-        url = start + '/' + beta_url.unpack('M')[0]
       end
       gmail.logout
       return url
