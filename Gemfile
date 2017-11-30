@@ -18,6 +18,9 @@ gem 'jquery-rails'
 # Added by Felix
 gem 'fastlane', '>= 2.66.0', '< 3.0.0'
 
+# Added by Jamnan
+gem 'gmail'
+
 gem 'bootstrap-sass', '~> 3.3.5'
 
 # nokogiri 1.8.1 seems to be problematic

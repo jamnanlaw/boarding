@@ -1,8 +1,10 @@
 require "spaceship"
+require "gmail"
 
 class AddTesterResponse
   attr_accessor :message
   attr_accessor :type
+  attr_accessor :url
 end  
 
 class BoardingService
@@ -17,6 +19,8 @@ class BoardingService
   attr_accessor :itc_token
   attr_accessor :itc_closed_text
   attr_accessor :imprint_url
+  attr_accessor :gmail_username
+  attr_accessor :gmail_password
 
   def initialize(app_id: ENV["ITC_APP_ID"],
                    user: ENV["ITC_USER"] || ENV["FASTLANE_USER"],
@@ -33,7 +37,8 @@ class BoardingService
     @itc_token = ENV["ITC_TOKEN"]
     @itc_closed_text = ENV["ITC_CLOSED_TEXT"]
     @imprint_url = ENV["IMPRINT_URL"]
-
+    @gmail_username = ENV["ITC_GMAIL_USER"]  # in format of name, @gmail.com is not necessary
+    @gmail_password = ENV["ITC_GMAIL_PASSWORD"]
     ensure_values
   end
 
@@ -41,12 +46,18 @@ class BoardingService
     add_tester_response = AddTesterResponse.new
     add_tester_response.type = "danger"
 
-    tester = find_app_tester(email: email, app: app)
+    #tester = find_app_tester(email: email, app: app)
+
+    dynamic_gmail = @gmail_username + '+' + email.gsub(/[@.]/, '@' => '_', '.' => '_') + '@gmail.com'
+    Rails.logger.info "dynamic gmail is: #{dynamic_gmail}"
+
+    tester = find_app_tester(email: dynamic_gmail, app: app)
+
     if tester
       add_tester_response.message = t(:message_email_exists)
     else
       tester = create_tester(
-        email: email,
+        email: dynamic_gmail,
         first_name: first_name,
         last_name: last_name,
         app: app
@@ -75,6 +86,16 @@ class BoardingService
 
     rescue => ex
       Rails.logger.error "Could not add #{tester.email} to app: #{app.name}"
+      raise ex
+    end
+
+     # read gmail message
+     begin
+      url = get_url_from_gmail(dyn_gmail: dynamic_gmail)
+      Rails.logger.info "Message is: #{url}"
+      add_tester_response.url = url
+    rescue => ex
+      Rails.logger.error "The TestFlight message cannot be shown."
       raise ex
     end
 
@@ -158,4 +179,41 @@ class BoardingService
       end
       return false
     end
+
+    def get_url_from_gmail(dyn_gmail: nil)
+
+      gmail = Gmail.connect(@gmail_username, @gmail_password)
+      # play with your gmail...
+
+      #toemail = "`#{@gmail_username}`.#{signupemail.sub!('@'.'.')}@gmail.com"
+      waitcount = 5
+      loop do
+        sleep(5) # wait 5 seconds
+        message = gmail.inbox.emails(:unread, :to => dyn_gmail).first
+        if message 
+          gmail.deliver do
+          to signupemail
+          subject message.subject
+          text_part do
+            body message.text
+          end
+          html_part do
+            content_type 'text/html; charset=UTF-8'
+            body message.html
+          end
+          break
+        else
+          waitcount -= 1
+          break if waitcount == 0
+        end
+      end
+      url = ""
+      if message
+        beta_url = body[/#{start}(.*?)#{last_char}/m, 1]
+        url = start + '/' + beta_url.unpack('M')[0]
+      end
+      gmail.logout
+      return url
+    end
+
 end

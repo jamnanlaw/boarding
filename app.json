@@ -1,42 +1,50 @@
 {
-  "name": "TestFlight boarding",
-  "description": "The easiest way to invite your TestFlight beta testers. The App Name is the name of the Heroku application, not the name of your app.",
-  "repository": "https://github.com/fastlane/boarding",
-  "logo": "https://github.com/fastlane/boarding/raw/master/assets/BoardingIcon.png",
-  "keywords": ["Testflight", "Spaceship", "fastlane", "invite"],
-  "website": "https://github.com/fastlane/boarding",
-  "env": {
-    "ITC_USER": {
-      "description": "Your iTunes Connect username",
-      "required": true
-    },
-    "ITC_PASSWORD": {
-      "description": "Your iTunes Connect password",
-      "required": true
-    },
-    "ITC_APP_ID": {
-      "description": "The App ID or App Identifier (Bundle Identifier) of your app from iTunes Connect, to which the tester will be invited.",
-      "required": true
-    },
-    "FASTLANE_ITC_TEAM_NAME": {
-      "description": "Optional: If you're in multiple teams, enter the name of your iTC team here. Make sure it matches.",
-      "required": false
-    },
-    "ITC_APP_TESTER_GROUPS": {
-      "description": "Optional: The groups you want the invited to be placed in",
-      "required": false
-    },
-    "ITC_TOKEN": {
-      "description": "Optional: Set a password to protect your website from random people signing up.",
-      "required": false
-    },
-    "GA_PROPERTY_ID": {
-      "description": "Optional: Configure Google Analytics to track visitors on your website.",
-      "required": false
-    },
-    "IMPRINT_URL": {
-      "description": "Optional: URL to imprint. The link is shown on the invite page.",
-      "required": false
+    "name": "TestFlight boarding",
+    "description": "The easiest way to invite your TestFlight beta testers. The App Name is the name of the Heroku application, not the name of your app.",
+    "repository": "https://github.com/fastlane/boarding",
+    "logo": "https://github.com/fastlane/boarding/raw/master/assets/BoardingIcon.png",
+    "keywords": ["Testflight", "Spaceship", "fastlane", "invite"],
+    "website": "https://github.com/fastlane/boarding",
+    "env": {
+        "ITC_USER": {
+            "description": "Your iTunes Connect username",
+            "required": true
+        },
+        "ITC_PASSWORD": {
+            "description": "Your iTunes Connect password",
+            "required": true
+        },
+        "ITC_APP_ID": {
+            "description": "The App ID or App Identifier (Bundle Identifier) of your app from iTunes Connect, to which the tester will be invited.",
+            "required": true
+        },
+        "FASTLANE_ITC_TEAM_NAME": {
+            "description": "Optional: If you're in multiple teams, enter the name of your iTC team here. Make sure it matches.",
+            "required": false
+        },
+        "ITC_APP_TESTER_GROUPS": {
+            "description": "Optional: The groups you want the invited to be placed in",
+            "required": false
+        },
+        "ITC_GMAIL_USER": {
+            "description": "Optional: if given, thsi gmail will be used to collect receive the invitation email",
+            "required": false
+        },
+        "ITC_GMAIL_PASSWORD": {
+            "description": "Optional: Set a password to receive the invitation emails",
+            "required": false
+        },
+        "SUPPORT_EMAIL": {
+            "description": "Optional: Set an email address for support",
+            "required": false
+        },
+        "GA_PROPERTY_ID": {
+            "description": "Optional: Configure Google Analytics to track visitors on your website.",
+            "required": false
+        },
+        "IMPRINT_URL": {
+            "description": "Optional: URL to imprint. The link is shown on the invite page.",
+            "required": false
+        }
     }
-  }
 }

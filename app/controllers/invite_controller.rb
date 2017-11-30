@@ -92,6 +92,7 @@ class InviteController < ApplicationController
       add_tester_response = boarding_service.add_tester(email, first_name, last_name)
       @message = add_tester_response.message
       @type = add_tester_response.type
+      @url = add_tester_response.url
     end
 
     def boarding_service

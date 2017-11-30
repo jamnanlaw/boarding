@@ -117,6 +117,11 @@ GEM
     gh_inspector (1.0.3)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    gmail (0.6.0)
+      gmail_xoauth (>= 0.3.0)
+      mail (>= 2.2.1)
+    gmail_xoauth (0.4.2)
+      oauth (>= 0.3.6)
     google-api-client (0.13.6)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 0.5)
@@ -168,6 +173,7 @@ GEM
     nanaimo (0.2.3)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
+    oauth (0.5.3)
     os (0.9.6)
     plist (3.3.0)
     public_suffix (2.0.5)
@@ -282,6 +288,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   fastlane (>= 2.66.0, < 3.0.0)
+  gmail
   http_accept_language (~> 2.0.5)
   jquery-rails
   nokogiri (<= 1.8.0)
