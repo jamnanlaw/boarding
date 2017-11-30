@@ -1,3 +1,18 @@
+-------
+Forked version:
+
+This version displays the TestFlight URL directly by using gmail as a proxy to receive the invitation emails and to extract the TestFlight URLs. In addition, a copy of the invitation email will be sent to the user from the gmail account.
+
+**Required:**
+
+- `ITC_GMAIL_USER` gmail account name, do NOT include @gmail.com
+- `ITC_GMAIL_PASSWORD` gmail account password
+
+**Optional:**
+- `SUPPORT_EMAIL` support email address in case something goes wrong
+
+-------
+
 <h3 align="center">
   <a href="https://github.com/fastlane/fastlane">
     <img src="https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png" width="100" />
