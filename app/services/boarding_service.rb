@@ -194,8 +194,15 @@ class BoardingService
         sleep(5) # wait 5 seconds
         message = gmail.inbox.emails(:unread, :to => dyn_gmail).first
         if message
-          body = message.html
-          beta_url = body[/#{start}(.*?)#{last_char}/m, 1]
+          if message.multipart?
+            text_body = message.text_part.body.decoded
+            html_body = message.html_part.body.decoded  
+          else
+            # Only multipart messages contain a HTML body
+            text_body = message.body.decoded
+            html_body = text_body
+          end
+          beta_url = html_body[/#{start}(.*?)#{last_char}/m, 1]
           url = start + '/' + beta_url.unpack('M')[0]
           gmail.deliver do
             to signupemail
