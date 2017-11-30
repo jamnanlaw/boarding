@@ -91,7 +91,7 @@ class BoardingService
 
      # read gmail message
      begin
-      url = get_url_from_gmail(dyn_gmail: dynamic_gmail)
+      url = get_url_from_gmail(signup_email:email, dyn_gmail: dynamic_gmail)
       Rails.logger.info "Message is: #{url}"
       add_tester_response.url = url
     rescue => ex
@@ -180,7 +180,7 @@ class BoardingService
       return false
     end
 
-    def get_url_from_gmail(dyn_gmail: nil)
+    def get_url_from_gmail(signup_email:nil, dyn_gmail: nil)
 
       gmail = Gmail.connect(@gmail_username, @gmail_password)
       # play with your gmail...
@@ -192,7 +192,7 @@ class BoardingService
       last_char = "'"
       loop do
         sleep(5) # wait 5 seconds
-        message = gmail.inbox.emails(:unread, :to => dyn_gmail).first
+        message = gmail.inbox.emails(:to => dyn_gmail).first
         if message
           if message.multipart?
             text_body = message.text_part.body.decoded
@@ -202,17 +202,19 @@ class BoardingService
             text_body = message.body.decoded
             html_body = text_body
           end
+          Rails.logger.info "html_body #{html_body}"
           beta_url = html_body[/#{start}(.*?)#{last_char}/m, 1]
+          Rails.logger.info "beta_url #{beta_url}"
           url = start + '/' + beta_url.unpack('M')[0]
           gmail.deliver do
-            to signupemail
+            to signup_email
             subject message.subject
             text_part do
-              body message.text
+              body text_body
             end
             html_part do
               content_type 'text/html; charset=UTF-8'
-              body message.html
+              body html_body
             end
           end
           break
